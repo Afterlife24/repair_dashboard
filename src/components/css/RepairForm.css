@@ -1,0 +1,167 @@
+/* RepairForm.css */
+.repair-form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.repair-form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 1.5rem;
+}
+
+.repair-options-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.repair-options-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.repair-options-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.add-option-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  background-color: #4f46e5;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-option-btn:hover {
+  background-color: #4338ca;
+}
+
+.add-option-btn svg {
+  margin-right: 0.5rem;
+}
+
+.repair-option-card {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+}
+
+.remove-option-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.remove-option-btn:hover {
+  color: #dc2626;
+}
+
+.repair-option-fields {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .repair-option-fields {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.repair-option-field {
+  margin-bottom: 1rem;
+}
+
+.repair-option-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.repair-option-field input,
+.repair-option-field textarea,
+.repair-option-field select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.repair-option-field textarea {
+  min-height: 5rem;
+}
+
+.submit-repair-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #4f46e5;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1.5rem;
+}
+
+.submit-repair-btn:hover {
+  background-color: #4338ca;
+}
+
+.submit-repair-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-options-message {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border-radius: 0.375rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
