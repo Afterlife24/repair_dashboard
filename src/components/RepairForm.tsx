@@ -87,7 +87,7 @@
 //     setSubmitMessage('');
 
 //     try {
-//       const response = await axios.post('http://localhost:5000/api/repairs', formData);
+//       const response = await axios.post('https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs', formData);
 //       console.log('Response:', response.data);
 //       setSubmitMessage('Repair service added successfully!');
       
@@ -394,7 +394,7 @@ const RepairForm: React.FC = () => {
       setIsLoadingBrands(true);
       try {
         // In a real app, you would fetch brands from your API
-        // const response = await axios.get(`http://localhost:5000/api/brands?category=${formData.category}`);
+        // const response = await axios.get(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/brands?category=${formData.category}`);
         // setBrands(response.data);
         
         // Mock data for demonstration
@@ -495,7 +495,7 @@ const RepairForm: React.FC = () => {
     setSubmitMessage('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/repairs', formData);
+      const response = await axios.post('https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs', formData);
       console.log('Response:', response.data);
       setSubmitMessage('Repair service added successfully!');
       

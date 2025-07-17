@@ -131,8 +131,8 @@
 
 //     try {
 //       const endpoint = formData.type === 'mobile'
-//         ? 'http://localhost:5000/api/products/add-mobile'
-//         : 'http://localhost:5000/api/products/add-laptop';
+//         ? 'https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/add-mobile'
+//         : 'https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/add-laptop';
 
 //       await axios.post(endpoint, formDataToSend, {
 //         headers: {
@@ -528,8 +528,8 @@ const ProductForm: React.FC = () => {
 
     try {
       const endpoint = formData.type === 'mobile'
-        ? 'http://localhost:5000/api/products/add-mobile'
-        : 'http://localhost:5000/api/products/add-laptop';
+        ? 'https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/add-mobile'
+        : 'https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/add-laptop';
 
       await axios.post(endpoint, formDataToSend, {
         headers: {

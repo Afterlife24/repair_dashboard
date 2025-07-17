@@ -24,7 +24,7 @@
 //     setIsLoading(true);
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:5000/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
+//         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
 //       );
 //       setProducts(response.data);
 //     } catch (err) {
@@ -38,7 +38,7 @@
 //   const handleDelete = async (id: string) => {
 //     try {
 //       setIsLoading(true);
-//       await axios.delete(`http://localhost:5000/api/products/delete-${type}/${id}`);
+//       await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${type}/${id}`);
 //       setProducts(products.filter(p => p.id !== id));
 //     } catch (err) {
 //       console.error('Failed to delete product:', err);
@@ -50,7 +50,7 @@
 
 //   // Image full URL
 //   const getImageUrl = (filename: string) => {
-//     return `http://localhost:5000/uploads/${filename}`;
+//     return `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/uploads/${filename}`;
 //   };
 
 //   // Placeholder fallback for image errors
@@ -217,7 +217,7 @@ const ProductList: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
+        `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
       );
       setProducts(response.data);
     } catch (err) {
@@ -231,7 +231,7 @@ const ProductList: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       setIsLoading(true);
-      await axios.delete(`http://localhost:5000/api/products/delete-${type}/${id}`);
+      await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${type}/${id}`);
       setProducts(products.filter(p => p.id !== id));
     } catch (err) {
       console.error('Failed to delete product:', err);

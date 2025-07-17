@@ -48,7 +48,7 @@
 //     setIsLoading(true);
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:5000/api/repairs/${getEndpoint()}`
+//         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}`
 //       );
 //       setRepairs(response.data);
 //     } catch (err) {
@@ -62,7 +62,7 @@
 //   const handleDelete = async (id: string) => {
 //     try {
 //       setIsLoading(true);
-//       await axios.delete(`http://localhost:5000/api/repairs/${getEndpoint()}/${id}`);
+//       await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${id}`);
 //       setRepairs(repairs.filter(r => r._id !== id));
 //     } catch (err) {
 //       console.error('Failed to delete repair:', err);
@@ -98,13 +98,13 @@
 //       if (updatedRepair._id) {
 //         // Update existing repair
 //         await axios.put(
-//           `http://localhost:5000/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
 //           updatedRepair
 //         );
 //       } else {
 //         // Add new repair
 //         await axios.post(
-//           `http://localhost:5000/api/repairs`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs`,
 //           { ...updatedRepair, category: type }
 //         );
 //       }
@@ -429,7 +429,7 @@ const RepairList: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/repairs/${getEndpoint()}`
+        `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}`
       );
       setRepairs(response.data);
     } catch (err) {
@@ -443,7 +443,7 @@ const RepairList: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       setIsLoading(true);
-      await axios.delete(`http://localhost:5000/api/repairs/${getEndpoint()}/${id}`);
+      await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${id}`);
       setRepairs(repairs.filter(r => r._id !== id));
     } catch (err) {
       console.error('Failed to delete repair:', err);
@@ -496,13 +496,13 @@ const RepairList: React.FC = () => {
       if (updatedRepair._id) {
         // Update existing repair
         await axios.put(
-          `http://localhost:5000/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
+          `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
           updatedRepair
         );
       } else {
         // Add new repair
         await axios.post(
-          `http://localhost:5000/api/repairs`,
+          `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs`,
           { ...updatedRepair, category: type }
         );
       }
@@ -524,13 +524,13 @@ const RepairList: React.FC = () => {
       if (isNewOption) {
         // Add new option
         await axios.post(
-          `http://localhost:5000/api/repairs/${getEndpoint()}/${currentRepair._id}/options`,
+          `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${currentRepair._id}/options`,
           option
         );
       } else if (option._id) {
         // Update existing option
         await axios.put(
-          `http://localhost:5000/api/repairs/${getEndpoint()}/${currentRepair._id}/options/${option._id}`,
+          `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${currentRepair._id}/options/${option._id}`,
           option
         );
       }
@@ -548,7 +548,7 @@ const RepairList: React.FC = () => {
     try {
       setIsLoading(true);
       await axios.delete(
-        `http://localhost:5000/api/repairs/${getEndpoint()}/${repairId}/options/${optionId}`
+        `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${repairId}/options/${optionId}`
       );
       fetchRepairs(); // Refresh the list
     } catch (err) {
@@ -1013,7 +1013,7 @@ export default RepairList;
 //     const fetchData = async () => {
 //       setIsLoading(true);
 //       try {
-//         const brandsRes = await axios.get(`http://localhost:5000/api/brands/${type}`);
+//         const brandsRes = await axios.get(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/brands/${type}`);
 //         setBrands(brandsRes.data.map((b: any) => b.name));
 //         fetchRepairs();
 //       } catch (err) {
@@ -1029,7 +1029,7 @@ export default RepairList;
 //   const fetchRepairs = async () => {
 //     try {
 //       const response = await axios.get(
-//         `http://localhost:5000/api/repairs/${getEndpoint()}`
+//         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}`
 //       );
 //       setRepairs(response.data);
 //     } catch (err) {
@@ -1041,7 +1041,7 @@ export default RepairList;
 //   const handleDelete = async (id: string) => {
 //     try {
 //       setIsLoading(true);
-//       await axios.delete(`http://localhost:5000/api/repairs/${getEndpoint()}/${id}`);
+//       await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${id}`);
 //       setRepairs(repairs.filter(r => r._id !== id));
 //     } catch (err) {
 //       console.error('Failed to delete repair:', err);
@@ -1107,13 +1107,13 @@ export default RepairList;
 //       if (updatedRepair._id) {
 //         // Update existing repair
 //         await axios.put(
-//           `http://localhost:5000/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
 //           updatedRepair
 //         );
 //       } else {
 //         // Add new repair
 //         await axios.post(
-//           `http://localhost:5000/api/repairs`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs`,
 //           { ...updatedRepair, category: type }
 //         );
 //       }
@@ -1136,12 +1136,12 @@ export default RepairList;
       
 //       if (isNewOption) {
 //         await axios.post(
-//           `http://localhost:5000/api/repairs/${endpoint}/${currentRepair._id}/options`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${endpoint}/${currentRepair._id}/options`,
 //           currentOption
 //         );
 //       } else if (currentOption._id) {
 //         await axios.put(
-//           `http://localhost:5000/api/repairs/${endpoint}/${currentRepair._id}/options/${currentOption._id}`,
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${endpoint}/${currentRepair._id}/options/${currentOption._id}`,
 //           currentOption
 //         );
 //       }
@@ -1160,7 +1160,7 @@ export default RepairList;
 //     try {
 //       setIsLoading(true);
 //       await axios.delete(
-//         `http://localhost:5000/api/repairs/${getEndpoint()}/${repairId}/options/${optionId}`
+//         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${repairId}/options/${optionId}`
 //       );
 //       fetchRepairs();
 //     } catch (err) {
