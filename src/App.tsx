@@ -27,6 +27,8 @@ import ProductList from './components/ProductList';
 import RepairForm from './components/RepairForm';
 import RepairList from './components/RepairList'; // You'll need to create this
 import Sidebar from './components/Sidebar';
+import AppointmentList from './components/AppointmentList';
+
 import './styles.css';
 
 const App: React.FC = () => {
@@ -41,6 +43,8 @@ const App: React.FC = () => {
         {activeTab === 'productList' && <ProductList />}
         {activeTab === 'repairForm' && <RepairForm />}
         {activeTab === 'repairList' && <RepairList />}
+        {activeTab === 'appointments' && <AppointmentList />}
+
       </main>
     </div>
   );
