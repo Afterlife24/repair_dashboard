@@ -1,3 +1,377 @@
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { Trash2, Edit, ChevronDown, Search, X, Plus } from 'lucide-react';
+// import './css/RepairList.css';
+
+// interface RepairOption {
+//   name: string;
+//   estimatedCost: number;
+//   description: string;
+//   screenType?: string;
+//   includesKeyboard?: boolean;
+//   includesStylus?: boolean;
+//   includesControllers?: boolean;
+// }
+
+// interface Repair {
+//   _id: string;
+//   brand: string;
+//   model: string;
+//   repairOptions: RepairOption[];
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
+// const RepairList: React.FC = () => {
+//   const [repairs, setRepairs] = useState<Repair[]>([]);
+//   const [type, setType] = useState<'mobile' | 'laptop' | 'tablet' | 'console'>('mobile');
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+//   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+//   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+//   const [currentRepair, setCurrentRepair] = useState<Repair | null>(null);
+
+//   // Map type to API endpoint
+//   const getEndpoint = () => {
+//     switch (type) {
+//       case 'mobile': return 'mobiles';
+//       case 'laptop': return 'laptops';
+//       case 'tablet': return 'tablets';
+//       case 'console': return 'consoles';
+//       default: return 'mobiles';
+//     }
+//   };
+
+//   // Fetch repair list
+//   const fetchRepairs = async () => {
+//     setIsLoading(true);
+//     try {
+//       const response = await axios.get(
+//         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}`
+//       );
+//       setRepairs(response.data);
+//     } catch (err) {
+//       console.error('Failed to fetch repairs:', err);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   // Delete repair by ID
+//   const handleDelete = async (id: string) => {
+//     try {
+//       setIsLoading(true);
+//       await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${id}`);
+//       setRepairs(repairs.filter(r => r._id !== id));
+//     } catch (err) {
+//       console.error('Failed to delete repair:', err);
+//     } finally {
+//       setIsLoading(false);
+//       setConfirmDeleteId(null);
+//     }
+//   };
+
+//   // Open edit modal
+//   const handleEdit = (repair: Repair) => {
+//     setCurrentRepair(repair);
+//     setIsEditModalOpen(true);
+//   };
+
+//   // Open add modal
+//   const handleAddNew = () => {
+//     setCurrentRepair(null);
+//     setIsAddModalOpen(true);
+//   };
+
+//   // Close all modals
+//   const closeModals = () => {
+//     setIsEditModalOpen(false);
+//     setIsAddModalOpen(false);
+//     setCurrentRepair(null);
+//   };
+
+//   // Save changes (for both add and edit)
+//   const handleSave = async (updatedRepair: Repair) => {
+//     try {
+//       setIsLoading(true);
+//       if (updatedRepair._id) {
+//         // Update existing repair
+//         await axios.put(
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs/${getEndpoint()}/${updatedRepair._id}`,
+//           updatedRepair
+//         );
+//       } else {
+//         // Add new repair
+//         await axios.post(
+//           `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/repairs`,
+//           { ...updatedRepair, category: type }
+//         );
+//       }
+//       closeModals();
+//       fetchRepairs(); // Refresh the list
+//     } catch (err) {
+//       console.error('Failed to save repair:', err);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchRepairs();
+//   }, [type]);
+
+//   // Filter by search term
+//   const filteredRepairs = repairs.filter(repair =>
+//     repair.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//     repair.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//     repair._id.toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+
+//   // Format date
+//   const formatDate = (dateString: string) => {
+//     return new Date(dateString).toLocaleDateString();
+//   };
+
+//   // Count repair options
+//   const countRepairOptions = (options: RepairOption[]) => {
+//     return options.length;
+//   };
+
+//   return (
+//     <div className="dashboard-container">
+//       <div className="card">
+//         <div className="card-header">
+//           <h2>Repair Services Management</h2>
+//           <div className="controls">
+//             <div className="search-box">
+//               <Search className="search-icon" />
+//               <input 
+//                 type="text" 
+//                 placeholder="Search repairs..." 
+//                 value={searchTerm}
+//                 onChange={(e) => setSearchTerm(e.target.value)}
+//               />
+//             </div>
+//             <div className="type-selector">
+//               <select 
+//                 value={type} 
+//                 onChange={(e) => setType(e.target.value as any)}
+//               >
+//                 <option value="mobile">Mobiles</option>
+//                 <option value="laptop">Laptops</option>
+//                 <option value="tablet">Tablets</option>
+//                 <option value="console">Consoles</option>
+//               </select>
+//               <ChevronDown className="select-arrow" />
+//             </div>
+//             <button className="btn-primary" onClick={handleAddNew}>
+//               <Plus size={16} /> Add New
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Loading State */}
+//         {isLoading && repairs.length === 0 ? (
+//           <div className="loading-state">
+//             <div className="spinner"></div>
+//             <p>Loading repairs...</p>
+//           </div>
+//         ) : filteredRepairs.length === 0 ? (
+//           <div className="empty-state">
+//             <p>No repairs found</p>
+//           </div>
+//         ) : (
+//           <div className="repair-table">
+//             <table>
+//               <thead>
+//                 <tr>
+//                   <th>Brand</th>
+//                   <th>Model</th>
+//                   <th>Repair Options</th>
+//                   <th>Last Updated</th>
+//                   <th>Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {filteredRepairs.map(repair => (
+//                   <tr key={repair._id}>
+//                     <td>{repair.brand}</td>
+//                     <td className="model-cell">{repair.model}</td>
+//                     <td>
+//                       <span className="badge">
+//                         {countRepairOptions(repair.repairOptions)} services
+//                       </span>
+//                     </td>
+//                     <td>{formatDate(repair.updatedAt)}</td>
+//                     <td>
+//                       <div className="action-buttons">
+//                         <button 
+//                           className="btn-icon" 
+//                           title="Edit"
+//                           onClick={() => handleEdit(repair)}
+//                         >
+//                           <Edit size={18} />
+//                         </button>
+//                         {confirmDeleteId === repair._id ? (
+//                           <>
+//                             <button 
+//                               className="btn-icon danger" 
+//                               onClick={() => handleDelete(repair._id)}
+//                               title="Confirm Delete"
+//                             >
+//                               <Trash2 size={18} />
+//                             </button>
+//                             <button 
+//                               className="btn-icon" 
+//                               onClick={() => setConfirmDeleteId(null)}
+//                               title="Cancel"
+//                             >
+//                               <X size={18} />
+//                             </button>
+//                           </>
+//                         ) : (
+//                           <button 
+//                             className="btn-icon" 
+//                             onClick={() => setConfirmDeleteId(repair._id)}
+//                             title="Delete"
+//                           >
+//                             <Trash2 size={18} />
+//                           </button>
+//                         )}
+//                       </div>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Edit Modal */}
+//       {isEditModalOpen && currentRepair && (
+//         <div className="modal-overlay">
+//           <div className="modal">
+//             <h3>Edit Repair</h3>
+//             <RepairForm 
+//               repair={currentRepair} 
+//               onSave={handleSave} 
+//               onCancel={closeModals} 
+//               type={type}
+//             />
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Add Modal */}
+//       {isAddModalOpen && (
+//         <div className="modal-overlay">
+//           <div className="modal">
+//             <h3>Add New Repair</h3>
+//             <RepairForm 
+//               repair={null} 
+//               onSave={handleSave} 
+//               onCancel={closeModals} 
+//               type={type}
+//             />
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// // Simple Repair Form Component (to be implemented)
+// const RepairForm: React.FC<{
+//   repair: Repair | null;
+//   onSave: (repair: Repair) => void;
+//   onCancel: () => void;
+//   type: string;
+// }> = ({ repair, onSave, onCancel, type }) => {
+//   const [formData, setFormData] = useState<Repair>(repair || {
+//     _id: '',
+//     brand: '',
+//     model: '',
+//     repairOptions: [],
+//     createdAt: '',
+//     updatedAt: ''
+//   });
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     onSave(formData);
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <div className="form-group">
+//         <label>Brand</label>
+//         <input 
+//           type="text" 
+//           value={formData.brand}
+//           onChange={(e) => setFormData({...formData, brand: e.target.value})}
+//           required
+//         />
+//       </div>
+//       <div className="form-group">
+//         <label>Model</label>
+//         <input 
+//           type="text" 
+//           value={formData.model}
+//           onChange={(e) => setFormData({...formData, model: e.target.value})}
+//           required
+//         />
+//       </div>
+//       {/* Add repair options management here */}
+//       <div className="form-actions">
+//         <button type="button" className="btn-secondary" onClick={onCancel}>
+//           Cancel
+//         </button>
+//         <button type="submit" className="btn-primary">
+//           Save
+//         </button>
+//       </div>
+//     </form>
+//   );
+// };
+
+// export default RepairList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // perfectly working - without drop down
 
