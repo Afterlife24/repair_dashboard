@@ -231,8 +231,7 @@ const ProductList: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       setIsLoading(true);
-      const typePath = type === 'mobile' ? 'mobiles' : 'laptops';
-      await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${typePath}/${id}`);
+      await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${type}/${id}`);
       setProducts(products.filter(p => p.id !== id));
     } catch (err) {
       console.error('Failed to delete product:', err);
