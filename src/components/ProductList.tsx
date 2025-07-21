@@ -39,17 +39,25 @@ const ProductList: React.FC = () => {
 
   // Delete product by ID
   const handleDelete = async (id: string) => {
-    try {
-      setIsLoading(true);
-await axios.delete(`https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`);
-      setProducts(products.filter(p => p.id !== id));
-    } catch (err) {
-      console.error('Failed to delete product:', err);
-    } finally {
-      setIsLoading(false);
-      setConfirmDeleteId(null);
-    }
-  };
+  try {
+    setIsLoading(true);
+    await axios.delete(
+      `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+    setProducts(products.filter(p => p.id !== id));
+  } catch (err) {
+    console.error('Failed to delete product:', err);
+    // Add error notification for user
+  } finally {
+    setIsLoading(false);
+    setConfirmDeleteId(null);
+  }
+};
 
   useEffect(() => {
     fetchProducts();
