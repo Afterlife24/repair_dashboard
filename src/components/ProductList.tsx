@@ -39,10 +39,15 @@ const ProductList: React.FC = () => {
 
   // Delete product by ID
   const handleDelete = async (id: string) => {
+  if (!id) {
+    console.error('No product ID provided for deletion');
+    return;
+  }
+
   try {
     setIsLoading(true);
     await axios.delete(
-      `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`,
+      `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${type}/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -58,6 +63,9 @@ const ProductList: React.FC = () => {
     setConfirmDeleteId(null);
   }
 };
+
+// In your JSX, update the delete button to ensure the correct ID is passed:
+
 
   useEffect(() => {
     fetchProducts();
@@ -142,31 +150,34 @@ const ProductList: React.FC = () => {
                           <Edit />
                         </button>
                         {confirmDeleteId === product.id ? (
-                          <>
-                            <button 
-                              className="btn-icon danger" 
-                              onClick={() => handleDelete(product.id)}
-                              title="Confirm Delete"
-                            >
-                              <Trash2 />
-                            </button>
-                            <button 
-                              className="btn-icon" 
-                              onClick={() => setConfirmDeleteId(null)}
-                              title="Cancel"
-                            >
-                              <X />
-                            </button>
-                          </>
-                        ) : (
-                          <button 
-                            className="btn-icon" 
-                            onClick={() => setConfirmDeleteId(product.id)}
-                            title="Delete"
-                          >
-                            <Trash2 />
-                          </button>
-                        )}
+  <>
+    <button 
+      className="btn-icon danger" 
+      onClick={() => handleDelete(product.id)}
+      title="Confirm Delete"
+      disabled={isLoading}
+    >
+      <Trash2 />
+    </button>
+    <button 
+      className="btn-icon" 
+      onClick={() => setConfirmDeleteId(null)}
+      title="Cancel"
+      disabled={isLoading}
+    >
+      <X />
+    </button>
+  </>
+) : (
+  <button 
+    className="btn-icon" 
+    onClick={() => setConfirmDeleteId(product.id)}
+    title="Delete"
+    disabled={isLoading}
+  >
+    <Trash2 />
+  </button>
+)}
                       </div>
                     </td>
                   </tr>
