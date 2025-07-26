@@ -1,13 +1,10 @@
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Trash2, Edit, ChevronDown, Search, X } from 'lucide-react';
 
 interface Product {
   id: string;
+  _id?: string; // For MongoDB _id
   name: string;
   brand: string;
   price: string;
@@ -20,62 +17,79 @@ const ProductList: React.FC = () => {
   const [type, setType] = useState<'mobile' | 'laptop'>('mobile');
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch product list
   const fetchProducts = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await axios.get(
         `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
       );
-      setProducts(response.data);
+
+      const normalized = response.data.map((item: any) => ({
+        ...item,
+        id: item.id || item._id, // Handle both id and _id
+      }));
+
+      setProducts(normalized);
     } catch (err) {
       console.error('Failed to fetch products:', err);
+      setError('Failed to load products. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Delete product by ID
   const handleDelete = async (id: string) => {
-  if (!id) {
-    console.error('No product ID provided for deletion');
-    return;
-  }
+    if (!id) {
+      setError('No product ID provided for deletion');
+      return;
+    }
 
-  try {
-    setIsLoading(true);
-    await axios.delete(
-      `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-${type}/${id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    setIsDeleting(true);
+    setError(null);
+    try {
+      // Using the generic delete endpoint
+      await axios.delete(
+        `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`
+      );
+      
+      // Optimistic update
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error('Failed to delete product:', err);
+      
+      // Fallback to specific endpoints if generic fails
+      try {
+        const specificEndpoint = type === 'mobile' 
+          ? `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-mobile/${id}`
+          : `https://rppe4wbr3k.execute-api.eu-west-3.amazonaws.com/api/products/delete-laptop/${id}`;
+
+        await axios.delete(specificEndpoint);
+        setProducts(prev => prev.filter(p => p.id !== id));
+      } catch (fallbackErr) {
+        console.error('Fallback delete failed:', fallbackErr);
+        setError('Failed to delete product. Please try again.');
+        // Re-fetch to ensure consistency
+        fetchProducts();
       }
-    );
-    setProducts(products.filter(p => p.id !== id));
-  } catch (err) {
-    console.error('Failed to delete product:', err);
-    // Add error notification for user
-  } finally {
-    setIsLoading(false);
-    setConfirmDeleteId(null);
-  }
-};
-
-// In your JSX, update the delete button to ensure the correct ID is passed:
-
+    } finally {
+      setIsDeleting(false);
+      setConfirmDeleteId(null);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
   }, [type]);
 
-  // Filter by search term
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.id.toLowerCase().includes(searchTerm.toLowerCase())
+    (product.id && product.id.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -106,7 +120,12 @@ const ProductList: React.FC = () => {
           </div>
         </div>
 
-        {/* Loading State */}
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
+
         {isLoading && products.length === 0 ? (
           <div className="loading-state">
             <div className="spinner"></div>
@@ -150,34 +169,34 @@ const ProductList: React.FC = () => {
                           <Edit />
                         </button>
                         {confirmDeleteId === product.id ? (
-  <>
-    <button 
-      className="btn-icon danger" 
-      onClick={() => handleDelete(product.id)}
-      title="Confirm Delete"
-      disabled={isLoading}
-    >
-      <Trash2 />
-    </button>
-    <button 
-      className="btn-icon" 
-      onClick={() => setConfirmDeleteId(null)}
-      title="Cancel"
-      disabled={isLoading}
-    >
-      <X />
-    </button>
-  </>
-) : (
-  <button 
-    className="btn-icon" 
-    onClick={() => setConfirmDeleteId(product.id)}
-    title="Delete"
-    disabled={isLoading}
-  >
-    <Trash2 />
-  </button>
-)}
+                          <>
+                            <button 
+                              className="btn-icon danger" 
+                              onClick={() => handleDelete(product.id)}
+                              title="Confirm Delete"
+                              disabled={isDeleting}
+                            >
+                              <Trash2 />
+                            </button>
+                            <button 
+                              className="btn-icon" 
+                              onClick={() => setConfirmDeleteId(null)}
+                              title="Cancel"
+                              disabled={isDeleting}
+                            >
+                              <X />
+                            </button>
+                          </>
+                        ) : (
+                          <button 
+                            className="btn-icon" 
+                            onClick={() => setConfirmDeleteId(product.id)}
+                            title="Delete"
+                            disabled={isLoading || isDeleting}
+                          >
+                            <Trash2 />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
