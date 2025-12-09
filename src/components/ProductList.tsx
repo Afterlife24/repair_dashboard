@@ -26,7 +26,7 @@ const ProductList: React.FC = () => {
     setError(null);
     try {
       const response = await axios.get(
-        `https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
+        `https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/${type === 'mobile' ? 'mobiles' : 'laptops'}`
       );
 
       const normalized = response.data.map((item: any) => ({
@@ -54,7 +54,7 @@ const ProductList: React.FC = () => {
     try {
       // Using the generic delete endpoint
       await axios.delete(
-        `https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`
+        `https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/delete/${type}/${id}`
       );
       
       // Optimistic update
@@ -65,8 +65,8 @@ const ProductList: React.FC = () => {
       // Fallback to specific endpoints if generic fails
       try {
         const specificEndpoint = type === 'mobile' 
-          ? `https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/delete-mobile/${id}`
-          : `https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/delete-laptop/${id}`;
+          ? `https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/delete-mobile/${id}`
+          : `https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/delete-laptop/${id}`;
 
         await axios.delete(specificEndpoint);
         setProducts(prev => prev.filter(p => p.id !== id));

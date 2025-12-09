@@ -153,8 +153,8 @@ const ProductForm: React.FC = () => {
       formDataToSend.append('inStock', String(formData.inStock));
 
       const endpoint = formData.type === 'mobile'
-  ? 'https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/add-mobile'
-  : 'https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/products/add-laptop';
+  ? 'https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/add-mobile'
+  : 'https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/products/add-laptop';
 
       const response = await axios.post(endpoint, formDataToSend, {
         headers: {

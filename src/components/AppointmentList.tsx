@@ -23,7 +23,7 @@ const AppointmentList: React.FC = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get('https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/appointments');
+      const res = await axios.get('https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/appointments');
       setAppointments(res.data.data);
       setLoading(false);
     } catch (error) {
@@ -44,7 +44,7 @@ const AppointmentList: React.FC = () => {
 
   const markCompleted = async (id: string) => {
     try {
-      await axios.put(`https://edmnkjhrrk.execute-api.eu-west-3.amazonaws.com/api/appointments/${id}/status`, {
+      await axios.put(`https://1g7akn1q1i.execute-api.eu-west-3.amazonaws.com/api/appointments/${id}/status`, {
         status: 'completed',
       });
       setAppointments(prev =>
